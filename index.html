@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+
+    <title>Potenciando la calidad en Drupal: Behat</title>
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/white.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/custom-new.css">
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+  </head>
+
+  <body>
+    <header>
+      <div class="logo">
+        <a href="/">
+          <img
+            src="./assets/images/event-logo.png"
+            width="640"
+            height="142"
+            alt="Event logo"
+          >
+        </a>
+      </div>
+    </header>
+
+    <div class="reveal">
+      <div class="slides">
+        <section
+          data-state="cover"
+          data-background-image="./assets/images/event-home.jpg"
+          data-background-size="contain"
+          data-background-color="#f8f7f3"
+          style="text-align: left;"
+        >
+          <h2 class="large">Potenciando la calidad en Drupal</h2>
+          <h1 class="xxxlarge">Behat</h1>
+        </section>
+
+        <section data-state="authors">
+          <div class="ice-breaking">
+            <article>
+              <img
+                src="./assets/images/sanzante.jpg"
+                width="100px"
+                height="100px"
+                alt="Ricardo Sanz"
+              >
+              <h2>Ricardo Sanz</h2>
+              <h3>Drupal Developer y DevOps</h3>
+              <h4>Software libre y música rara</h4>
+              <a
+                href="https://drupal.org/u/tunic"
+                target="_blank"
+              >
+                drupal.org/u/tunic
+              </a>
+            </article>
+          </div>
+          <br>
+          <a
+            href="https://metadrop.net"
+            target="_blank"
+          >
+            <img
+              src="./assets/images/metadrop-logo.svg"
+              width="350"
+            >
+          </a>
+        </section>
+
+        <section
+          data-state="chapter"
+          data-auto-animate
+        >
+          <h1 class="xlarge">Índice</h1>
+        </section>
+
+        <section
+          data-state="content"
+          data-auto-animate
+        >
+          <h1>Índice</h1>
+          <ol class="small">
+            <li class="fragment fade-in">Requisitos del taller</li>
+            <li class="fragment fade-in">Introducción a Behat</li>
+            <li class="fragment fade-in">Parte práctica
+          </ol>
+        </section>
+
+        <section
+          data-state="chapter"
+          data-auto-animate
+        >
+          <h1 class="xlarge">Requisitos del taller</h1>
+        </section>
+
+        <section
+          data-state="content"
+          data-auto-animate
+        >
+          <h1>Requisitos del taller</h1>
+          <ol>
+            <li>Git</li>
+            <li>Composer</li>
+            <li>Make</li>
+            <li>Docker</li>
+            <li>Docker compose (v1)</li>
+          </ol>
+        </section>
+
+
+        <section>
+          <h1>Montar entorno</h1>
+          <ul>
+            <li>
+              Clonar repositorio
+              <pre>
+                <code>
+  git clone git@github.com:rsanzante/drupalcampspain2023-behat-workshop.git
+                </code>
+              </pre>
+            </li>
+            <li>
+              Instalar paquetes
+              <pre>
+                <code>
+  composer install
+                </code>
+              </pre>
+            </li>
+            <li>
+              Ejecutar asistente
+              <pre>
+                <code>
+  composer boilerplate:assistant
+                </code>
+              </pre>
+              Dejar valores por defecto excepto perfil a instalar (<strong>indicar perfil <em>Umami</em></strong>) y <strong>no crear subtheme</strong>
+            </li>
+            <li>
+          </ul>
+        </section>
+
+        <section
+          data-state="chapter"
+          data-auto-animate
+        >
+          <h1 class="xlarge">Introducción a Behat</h1>
+        </section>
+
+        <section
+          data-state="content"
+          data-auto-animate
+        >
+          <h1>Introducción a Behat</h1>
+          <ul>
+            <li>
+              Framework BDD (Beahvior Driven Development)
+            </li>
+            <li>
+              Describir un comportamiento que se testea automáticamente
+            </li>
+            <li>Lenguaje natural</li>
+            <li>Test de aceptación</li>
+
+          </ul>
+        </section>
+
+        <section data-state="content">
+          <h1>¿Qué significa «describir»?</h1>
+          <ul>
+            <li>Historias de usuario</li>
+            <li>
+              Funcionalidad explicada desde el punto de vista de un usuario
+            </li>
+            <li>Escritas mediante el lenguaje Gherkin</li>
+          </ul>
+        </section>
+
+        <section data-state="content">
+          <h1>Ejemplo de historia de usuario</h1>
+          <img
+            src="./assets/images/feature_outline.png"
+            alt="Event logo"
+          >
+        </section>
+
+        <section data-state="content">
+          <h1>Gherkin</h1>
+          <ul>
+            <li>
+              Lenguaje para escribir historias de usuario
+            </li>
+            <li>
+              Organizado en ficheros
+              <code>.feature</code>
+            </li>
+            <li>Cada feature es una funcionalidad</li>
+            <li>
+              La funcionalidad se describe/prueba mediante escenarios
+            </li>
+            <li>
+              Cada escenario se compone de pasos
+              <em>(steps)</em>
+            </li>
+            <li>
+              La primera palabra de un
+              <em>step</em>
+              (Given, Then, And, When) NO es relevante
+            </li>
+          </ul>
+        </section>
+
+        <section data-state="content">
+          <h1>
+            ¿Qué significa que «se testea automáticamente»?
+          </h1>
+          <ul>
+            <li>
+              Cada
+              <em>step</em>
+              se mapea a acciones
+            </li>
+            <li>Acciones -> funciones en PHP</li>
+            <li>
+              Drivers
+              <ul>
+                <li>Goutte</li>
+                <li>Selenium2</li>
+                <li>Drupal API</li>
+                <li>...</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section data-state="content">
+          <h1>Behat Extension</h1>
+          <ul>
+            <li>Módulo Drupal que extiende Behat</li>
+            <li>
+              Provee pasos específicos a Drupal
+              <ul>
+                <li>Acceder como cierto usuario, rol, etc</li>
+                <li>Creación de contenido, usuarios, etc</li>
+                <li>Detección de mensajes</li>
+                <li>...</li>
+              </ul>
+            </li>
+            <li>
+              Provee características propias de Drupal
+              <ul>
+                <li>Detección de regiones</li>
+                <li>Detección de login</li>
+                <li>...</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section data-state="content">
+          <h1>Behat Contexts</h1>
+          <ul>
+            <li>Mecanismo estándar para extender Behat</li>
+            <li>Uso típico: añadir nuevos pasos</li>
+            <li>
+              Ejemplos
+              <ul>
+                <li>Para mensajes Drupal</li>
+                <li>Para Batch API</li>
+                <li>Para depurar</li>
+                <li>Para formualrios</li>
+                <li>...</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section
+          data-state="chapter"
+          data-auto-animate
+        >
+          <h1 class="xlarge">Parte práctica</h1>
+        </section>
+
+        <section
+          data-state="content"
+          data-auto-animate
+        >
+          <h1>Parte práctica</h1>
+          <ul>
+            <li class="fragment fade-in">Configuración incial</li>
+            <li class="fragment fade-in">Nuevo proyecto</li>
+            <li class="fragment fade-in">Escribiendo tests de aceptación</li>
+          </ul>
+        </section>
+
+        <section
+          data-state="chapter"
+          data-auto-animate>
+          <h1 class="xlarge">Configuración inicial</h1>
+        </section>
+
+        <section
+          data-state="content"
+          data-auto-animate
+        >
+          <h1>Configuración inicial</h1>
+          <ul>
+            <li>
+              Behat puede ser complejo de poner en marcha
+            </li>
+            <li>
+              Usaremos Metadrop Boilerplate
+            </li>
+            <li>
+              Contenedor PHP + Apache + Selenium + Chrome + ...
+            </li>
+            <li>Preconfigurado para ejecutar Behat</li>
+          </ul>
+        </section>
+
+        <section>
+        <h1>Montar entorno</h1>
+        <ul>
+          <li>
+            Clonar repositorio
+            <pre>
+              <code>
+git clone git@github.com:rsanzante/drupalcampspain2023-behat-workshop.git
+              </code>
+            </pre>
+          </li>
+          <li>
+            Instalar paquetes
+            <pre>
+              <code>
+composer install
+              </code>
+            </pre>
+          </li>
+          <li>
+            Ejecutar asistente
+            <pre>
+              <code>
+composer boilerplate:assistant
+              </code>
+            </pre>
+            Dejar valores por defecto excepto perfil a instalar (<strong>indicar perfil <em>Umami</em></strong>) y <strong>no crear subtheme</strong>
+          </li>
+          <li>
+        </ul>
+      </section>
+
+
+        <section data-state="content">
+          <h1>Control de contenedores</h1>
+          <ul>
+            <li>
+              Levantar contenedores:
+              <pre>make up</pre>
+            </li>
+            <li>
+              Parar contenedores
+              <pre>make stop</pre>
+            </li>
+            <li>
+              Borrar contenedores
+              <pre>make prune</pre>
+            </li>
+            <li>
+              Shell en contenedor PHP
+              <pre>make shell</pre>
+            </li
+          </ul>
+        </section>
+
+        <section data-state="content">
+          <h1>Comandos Behat</h1>
+          Dentro del contenedor de PHP (
+          <code>make shell</code>
+          )
+          <ul>
+            <li>
+              Ejecutar tests:
+              <pre>behat</pre>
+            </li>
+            <li>
+              Mostar pasos disponibles:
+              <pre>behat -dl</pre>
+            </li>
+            <li>
+              Ejcutar tests con una etiqueta dada:
+              <pre>behat --tag=foo</pre>
+            </li>
+          </ul>
+        </section>
+
+        <section
+          data-state="chapter"
+          data-auto-animate
+        >
+          <h1 class="xlarge">Nuevo proyecto</h1>
+        </section>
+
+        <section
+          data-state="content"
+          data-auto-animate
+        >
+          <h1>Nuevo proyecto</h1>
+          <div>
+            <em>
+              <span class="small">
+                «Tenemos un proyecto de un sitio de recetas, donde los usuarios puedan ver las que hay disponbiles y puedan buscarlas. Habría que clasificarlas de alguna forma, con etiquetas o similar.
+                <span class="small">
+                  También debería tener otros contenidos relacionados con recetas,
+                  <span class="small">
+                    que el departamento de SEO dice que es imprescindible, algo
+                    <span class="small">
+                      como artículos o parecido. Habrá diferentes personas aportando recetas por lo que se quiere poder revisar lo que se publique antes de que lo vean los usuarios.
+                      <span class="small">
+                        Ah, y que los contenidos muestren otros contenidos relacionados, que también es ncesario para el SEO.
+                        <span class="small">
+                          ¿Que dificultad prevéis
+                          <span class="small">
+                            ? También habría que tener listados
+                            <span class="small">
+                              de recetas
+                              <span class="small">
+                                y de artículos.
+                                <span class="small">
+                                  Importante la seguridad, claro,
+                                  <span class="small">
+                                    que no podemos permitirnos un
+                                    <em>defacement</em>
+                                    , sería fatal para nuestra imagen.
+                                    <span class="small">
+                                      <span class="small">
+                                        Sobre todo que tenga un buen
+                                        <span class="small">diseño........</span>
+                                      </span>
+                                    </span>
+                                  </span>
+                                </span>
+                              </span>
+                            </span>
+                          </span>
+                        </span>
+                      </span>
+                    </span>
+                  </span>
+                </span>
+                »
+              </span>
+            </em>
+          </div>
+        </section>
+
+        <section data-state="content">
+          <h1>Paso a requisitos</h1>
+          <ul>
+            <li>
+              Sitio con dos contenidos: recetas y artículos
+            </li>
+            <li>
+              Listados de recetas y artículos por fecha
+            </li>
+            <li>Buscador de recetas</li>
+            <li>Flujo editorial</li>
+            <li>
+              Artículos relacionados en cada página de artículo
+            </li>
+            <li>Página de inicio con un poco de todo</li>
+            <li>...</li>
+          </ul>
+        </section>
+
+        <section
+          data-state="chapter"
+          data-auto-animate
+        >
+          <h1 class="xlarge">Escribiendo tests de aceptación</h1>
+        </section>
+
+        <section
+          data-state="content"
+          data-auto-animate
+        >
+          <h1>Escribiendo tests de aceptación</h1>
+          <ul>
+            <li>
+              Añadir fichero
+              <code>.feature</code>
+            </li>
+            <li>
+              ¿Dónde?
+              <code>tests/functional/behat/features/umami/</code>
+            </li>
+            <li>
+              Describir historia de usuario usando escenarios con Gherkin
+            </li>
+          </ul>
+        </section>
+
+        <section data-state="content">
+          <h1>HdU 1: Ver listado de recetas</h1>
+          <div class="left">
+            El usuario deber poder ver listado de recetas.
+            <br>
+            Pasos sugeridos:
+          </div>
+          <ul class="left">
+            <li>
+              <code>Given I am anonymous user</code>
+            </li>
+            <li>
+              <code>Given I go to "&lt;ruta&gt;"</code>
+            </li>
+            <li>
+              <code>And I click  "&lt;texto que clicar&gt;"</code>
+            </li>
+            <li>
+              <code>And I should see "&lt;texto&gt;"</code>
+            </li>
+          </ul>
+          <br>
+          <br>
+          <div class="xsmall left">
+            <em>
+              fichero
+              <code>recipe_list.feature</code>
+            </em>
+          </div>
+        </section>
+
+        <section data-state="content">
+          <h1>
+            HdU 2: Acceder a la receta receta destacada de portada
+          </h1>
+          <div class="left">
+            El usuario deber ver la receta destacada en portada y acceder a ella desde la propia portada.
+            <br>
+            Pasos sugeridos:
+          </div>
+          <ul class="left">
+            <li>
+              <code>Given I am anonymous user</code>
+            </li>
+            <li>
+              <code>Given I go to "&lt;ruta&gt;"</code>
+            </li>
+            <li>
+              <code>And I click  "&lt;texto que clicar&gt;"</code>
+            </li>
+            <li>
+              <code>And I should see "&lt;texto&gt;"</code>
+            </li>
+          </ul>
+          <br>
+          <br>
+          <div class="xsmall left">
+            <em>
+              fichero
+              <code>featured_recipe.feature</code>
+            </em>
+          </div>
+        </section>
+
+        <section data-state="content">
+          <h1>HdU 3: Acceder a artículo de portada</h1>
+          <div class="left">
+            El usuario deber ver un artículo en la portada y acceder a él desde la propia portada.
+            <br>
+            Pasos sugeridos:
+          </div>
+          <ul class="left">
+            <li>
+              <code>Given I am anonymous user</code>
+            </li>
+            <li>
+              <code>Given I go to "&lt;ruta&gt;"</code>
+            </li>
+            <li>
+              <code>And I click  "&lt;texto que clicar&gt;"</code>
+            </li>
+            <li>
+              <code>And I should see "&lt;texto&gt;"</code>
+            </li>
+          </ul>
+          <br>
+          <br>
+          <div class="xsmall left">
+            <em>
+              fichero
+              <code>home_page_article.feature</code>
+            </em>
+          </div>
+        </section>
+
+        <section data-state="content">
+          <h1>HdU 4: Acceder a un artículo</h1>
+          <div class="left">
+            El usuario deber ver un artículo, incluyendo sus etiquetas, artículos relacionados y
+            <em>breadcrumb</em>
+            <br>
+            Pasos sugeridos:
+          </div>
+          <ul class="left">
+            <li>
+              <code>Given I am anonymous user</code>
+            </li>
+            <li>
+              <code>Given I go to "&lt;ruta&gt;"</code>
+            </li>
+            <li>
+              <code>And I should see "&lt;texto&gt;"</code>
+            </li>
+          </ul>
+          <br>
+          <br>
+          <div class="xsmall left">
+            <em>
+              fichero
+              <code>article_view.feature</code>
+            </em>
+          </div>
+        </section>
+
+        <section data-state="content">
+          <h1>Problemas de la HdU4:</h1>
+          <ul>
+            <li>
+              El texto exacto del
+              <em>breadcrumb</em>
+              no es obvio o ya aparece en la página
+            </li>
+            <li>
+              ¿Cómo probar que el propio artículo no sale en artículos relacionados?
+            </li>
+          </ul>
+        </section>
+
+        <section
+          data-state="content"
+          data-auto-animate
+        >
+          <h1>
+            Definir regiones del
+            <em>theme</em>
+          </h1>
+          <ul>
+            <li>
+              Declarar regiones mediante selectores CSS
+            </li>
+            <li>
+              Los
+              <em>steps</em>
+              pueden usarlas
+            </li>
+          </ul>
+          <br>
+          <br>
+          <div>
+            Editar behat.yml y añadir dentro la  propiedad
+            <code>NuvoleWeb\Drupal\DrupalExtension</code>
+            :
+            <pre>
+region_map:
+  pre header: ".region-pre-header"
+  highlighted: ".region-highlighted"
+  header: ".region-header"
+  breadcrumb: ".region-breadcrumbs"
+  content: ".region-content"
+  content bottom: ".region-content-bottom"
+  tabs: ".region-tabs"
+  sidebar: ".region-sidebar"
+  bottom: ".region-bottom"
+  footer: "region-footer"
+              </pre>
+          </div>
+        </section>
+
+        <section data-state="content">
+          <h1>HdU 4B: Acceder a un artículo</h1>
+          <div class="left">
+            Mismo caso que la historia de usuario 4 pero usando regiones para los pasos
+            <br>
+            Pasos sugeridos:
+          </div>
+          <ul class="left">
+            <li>
+              <code>Given I am anonymous user</code>
+            </li>
+            <li>
+              <code>Given I go to "&lt;ruta&gt;"</code>
+            </li>
+            <li>
+              <code>And I should see "&lt;texto&gt;"</code>
+            </li>
+            <li>
+              <code>And I should not see "&lt;texto&gt;"</code>
+            </li>
+          </ul>
+          <br>
+          <br>
+          <div class="xsmall left">
+            <em>
+              fichero
+              <code>article_view_improved.feature</code>
+            </em>
+          </div>
+        </section>
+
+        <section data-state="content">
+          <h1>Usando la API de Drupal</h1>
+          <ul>
+            <li>
+              Ciertos pasos requiren realizar cambios en el sitio
+            </li>
+            <li>
+              Ejemplo: crear un usuario, crear entidades, ejecutar cron, etc.
+            </li>
+            <li>
+              Al añadir la etiqueta
+              <code>@api</code>
+              a un escenario se activa el
+              <em>driver</em>
+              Drupal API.
+            </li>
+            <li>
+              Puede ejecutar código PHP en el contexto de Drupal
+              <em>bootstrapeado</em>
+            </li>
+          </ul>
+        </section>
+
+        <section data-state="content">
+          <h1>HdU 5: Acceso a creación de receta</h1>
+          <div class="left">
+            Solo los usuarios
+            <code>author</code>
+            deben poder acceder al formulario de creación de recetas.
+            <br>
+            Pasos sugeridos:
+          </div>
+          <ul class="left">
+            <li>
+              <code>
+                Given I am logged in as a user with the &lt;rol&gt; role
+              </code>
+            </li>
+            <li>
+              <code>Given I go to "&lt;ruta&gt;"</code>
+            </li>
+            <li>
+              <code>And I should see "&lt;texto&gt;"</code>
+            </li>
+            <li>
+              <code>And I should not see "&lt;texto&gt;"</code>
+            </li>
+          </ul>
+          <div class="left">
+            Se necesita añadir
+            <code>@api</code>
+            en el escenario
+          </div>
+          <br>
+          <div class="xsmall left">
+            <em>
+              fichero
+              <code>recipe_edit_form_access.feature</code>
+            </em>
+          </div>
+        </section>
+
+        <section data-state="content">
+          <h1>Problemas de la HdU5:</h1>
+          <ul>
+            <li>Los tests son repetivos</li>
+            <li>Solo cambian algunos parámetros</li>
+            <li>¿Cómo reutilizar tests?</li>
+          </ul>
+        </section>
+
+        <section data-state="content">
+          <h1>Scenario Outline</h1>
+          <ul>
+            <li>
+              Tests repetitivos que solo cambian algunos parámetros
+            </li>
+            <li>
+              Solución: escenarios parametrizables con
+              <code>Scenario Outline</code>
+            </li>
+          </ul>
+          <pre>
+            <code
+              data-trim
+              data-noescape
+            >
+              Scenario Outline: An example
+                Given I enter the &lt;value&gt; value
+                 Then I should see &lt;value&gt;
+
+                 Examples:
+                 | value |
+                 | foo   |
+                 | bar   |
+            </code>
+          </pre>
+        </section>
+
+        <section data-state="content">
+          <h1>HdU 5B: Acceso a creación de receta</h1>
+          <div class="left">
+            Mismo caso que la historia de usuario 5 pero usando
+            <code>Scenario Outline</code>
+          </div>
+          <br>
+          <div class="xsmall left">
+            <em>
+              fichero
+              <code>
+                recipe_edit_form_access_scenario_outline.feature
+              </code>
+            </em>
+          </div>
+        </section>
+
+        <section data-state="content">
+          <h1>Usando un navegador completo</h1>
+          <ul>
+            <li>
+              Hasta ahora se usaban peticiones HTTP directas y se examinaba el resultado
+            </li>
+            <li>
+              Al añadir la etiqueta
+              <code>@javascript</code>
+              a un escenario se usa un motor con Javascript (por ejemplo, Chrome a través de Selenium2)
+            </li>
+            <li>
+              Necesario por ejemplo para campos con CKEditor
+            </li>
+          </ul>
+        </section>
+
+        <section data-state="content">
+          <h1>HdU 6: Creación de una receta</h1>
+          <div class="left">
+            Crear una receta usando el formulario de receta
+            Pasos sugeridos:
+          </div>
+          <ul class="left">
+            <li>
+              <code>
+                Then I fill in "&lt;campo&gt;" with "&lt;valor&gt;"
+              </code>
+            </li>
+            <li>
+              <code>And I select "&lt;valor&gt;" from "&lt;select&gt;"</code>
+            </li>
+            <li>
+              <code>
+                And I scroll to "&lt;campo&gt;" field
+              </code>
+            </li>
+            <li>
+              <code>And I fill in the rich text editor "Summary" with "This is a summary"</code>
+            </li>
+            <li>
+              <code>And I assign the media with name "nombre" to "id de campo" field</code>
+            </li>
+          </ul>
+          <div class="left">
+            Se necesita añadir
+            <code>@api</code> y <code>@javascript</code>
+            en el escenario
+          </div>
+          <br>
+          <div class="xsmall left">
+            <em>
+              fichero
+              <code>recipe_create.feature</code>
+            </em>
+          </div>
+        </section>
+
+        <section data-state="content">
+          <h1>Creando pasos propios</h1>
+          <ul>
+            <li>
+              Añadir pasos específicos para un proyecto
+            </li>
+            <li>
+              Facilitar aciones repetitivas mediante un paso
+            </li>
+            <li>
+              Mantener la legibilidad de los tests
+            </li>
+          </ul>
+        </section>
+        <section data-state="content">
+          <h1>FeatureContext</h1>
+          <ul>
+            <li>
+              Añadir función con expresión en anotación que la asocia con un paso
+              <pre>
+                <code>
+/**
+ * @When I do something with :argument
+ */
+public function iDoSomethingWith($argument) {
+  // do something with $argument
+}
+                </code>
+              </pre>
+            </li>
+            <li>
+              Interactuar con navegador con Mink
+            </li>
+            <li>
+              Ejecutar código Drupal si <code>@api</code> está activa en el escenario
+            </li>
+            <li>
+              Cualquier acción ejecutable mediante PHP
+            </li>
+          </ul>
+        </section>
+
+
+        <section data-state="content">
+          <h1>HdU 7: Uso de un paso propio</h1>
+          <div class="left">
+            Crear y usa un paso propio que lleve a la lista de recetas<br><br>
+            Paso: <code>When I go to the recipe list</code>
+          </div>
+          <ul class="left">
+            <li>
+              Editar fichero <code>tests/functional/behat/bootstrap/FeatureContext.php </code>
+            </li>
+            <li>
+              Añadir función con el paso propio
+            </li>
+          </ul>
+          <br><br>
+          <div class="left">
+            Código sugerido
+          </div>
+          <ul>
+            <li>
+              <code>
+                $this->visitPath('&lt;ruta&gt;');
+              </code>
+            </li>
+            <li>
+              <code>$session->getPage()->find('region', '&lt;region&gt;');</code>
+            </li>
+            <li>
+              <code>$region->findLink('&lt;enlace&gt;');</code>
+            </li>
+          </ul>
+          <br>
+          <br>
+          <div class="xsmall left">
+            <em>
+              fichero
+              <code>custom_step.feature</code>
+            </em>
+          </div>
+        </section>
+
+
+        <section
+          data-state="chapter"
+          data-auto-animate
+        >
+          <h1 class="xlarge">Referencias</h1>
+        </section>
+        <section
+          data-state="content"
+          data-auto-animate
+        >
+          <h1>Referencias</h1>
+          <ul>
+            <li>
+              <a href="https://behat.org/en/latest/index.html">Documentación oficial</a> de Behat
+            </li>
+            <li>
+              <a href="https://github.com/nuvoleweb/drupal-behat">Behat Contexts</a> de Nuvole
+            </li>
+            <li>
+              <a href="https://github.com/Metadrop/behat-contexts">Behat Contexts</a> de Metadrop
+            </li>
+            <li>
+              <a href="https://github.com/Metadrop/drupal-boilerplate">Drupal Boilerplate</a> con Docker y Behat preconfigurado
+            </li>
+          </ul>
+        </section>
+
+
+        <section
+          data-state="questions"
+          data-background-image="./assets/images/end_03.jpg"
+          data-background-size="contain"
+          data-background-position="center"
+          data-background-color="#f8f7f3"
+        >
+          <h1 class="xlarge" style="margin-bottom: 50%">Questions?</h1>
+
+        </section>
+
+        <section
+          data-state="end"
+          data-background-image="./assets/images/end.svg"
+          data-background-size="contain"
+          data-background-position="center"
+          data-background-color="#f8f7f3"
+        ></section>
+
+        <section
+          data-state="end"
+          data-background-image="./assets/images/sponsors_01.png"
+          data-background-size="contain"
+          data-background-position="center"
+          data-background-color="#f8f7f3"
+        ></section>
+
+        <section
+          data-state="end"
+          data-background-image="./assets/images/sponsors_02.png"
+          data-background-size="contain"
+          data-background-position="center"
+          data-background-color="#f8f7f3"
+        ></section>
+
+        <section
+          data-state="thanks"
+          data-background-image="./assets/images/end_03.jpg"
+          data-background-size="contain"
+          data-background-position="center"
+          data-background-color="#f8f7f3"
+        >
+          <h1 class="xlarge" style="margin-bottom: 50%">¡Gracias!</h1>
+        </section>
+
+      </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      // More info about initialization & config:
+      // - https://revealjs.com/initialization/
+      // - https://revealjs.com/config/
+      Reveal.initialize({
+        hash: true,
+        showNotes: false,
+        slideNumber: false,
+        defaultTiming: 33,
+        transition: "slide",
+        highlight: {
+          highlightOnLoad: false,
+        },
+        backgroundTransition: "fade",
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+      });
+
+    // Set data-* values depending of the type of slide.
+		for (var slide of document.getElementsByTagName('section')) {
+
+      slideType = slide.getAttribute('data-state');
+      switch(slideType) {
+        case 'chapter':
+          slide.setAttribute("data-background-image", "./assets/images/background_02B.png");
+          break;
+
+        case 'content':
+          slide.setAttribute("data-state", "content");
+          slide.setAttribute("data-background-image", "./assets/images/background_01.svg");
+          //slide.setAttribute("data-background-size", "contain");
+          slide.setAttribute("data-background-position", "bottom right");
+      }
+
+      if (!(slide.getAttribute("data-auto-animate-id"))) {
+          slide.setAttribute("data-auto-animate-id", "atarget");
+      }
+
+		}
+    </script>
+  </body>
+</html>
